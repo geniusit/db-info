@@ -10,7 +10,9 @@ metaDescription: livequeries
 ## Introduction
 
 Dans ce premier article, nous allons voir comment il est possible de rendre l'état d'une valeur en base de données directement dans une vue.
-La vue se verra automatiquement notifée d'une modification en base de données.
+La vue se verra automatiquement notifée d'une modification en base de données. L'idée est que l'utilisateur ne doive plus rafraichir sa page pour voir les nouvelles données apparaitrent.
+Bien qu'il soit possible de demander à l'application cliente de requêter le serveur toutes les x secondes (long polling), afin de se mettre à jour, je trouve qu'il est préférable que le serveur nous envoie ces données automatiquement dès qu'une mise à jour est disponible.
+
 Il existe trois solutions :
  - Hazura
  - Postgraphile
@@ -22,6 +24,7 @@ A savoir :
 - Une base de donnée postgresql + pgadmin
 - La remontée des WAL (Write Applications Logs) vers un serveur nodejs.
 - Postgraphile sera utilisée pour cela
+- Un serveur nodejs (expressjs)
 - Un serveur graphql qui émettra les données sous forme de live-queries.
 
 Je ferai ensuite un article expliquant la couche front-end.
@@ -133,6 +136,91 @@ Le login et mot de passe se situent dans le fichier docker-compose.yml (services
 Si vous êtes connecté à l'interface web c'est que tout s'est bien passé. 
 Connectez-vous finalement au votre serveur 
 
+##Création du serveur Express-node
+
+Express est un framework rapide et léger pour NodeJS.
+Par ici pour la documentation : https://expressjs.com 
+
+
+Premièrement, créer un dossier `server` et déplaçons nous à l'intérieur.
+
+```mkdir server && cd_```
+
+Créer le projet avec la commande
+
+```npm init```
+
+Ensuite, il est temps d'installer nos dépendances
+
+Dépendances
+```npm i body-parser cors express knex knex-migrate postgraphile pg```
+
+Dépendances dev
+```npm i nodemon dotenv -D```
+
+Voici notre fichier `package.json`
+
+```
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node server/src/index.js",
+    "watch": "nodemon server/src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphile/pg-pubsub": "^4.9.0",
+    "@graphile/subscriptions-lds": "^4.9.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "graphile-utils": "^4.9.2",
+    "graphql-playground": "^1.3.17",
+    "knex": "^0.21.9",
+    "knex-migrate": "^1.7.4",
+    "pg": "^8.4.2",
+    "postgraphile": "^4.9.2"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.6"
+  }
+}
+
+```
+
+Pour permettre au serveur de s'éxecuter, nous devons créer le fichier `src/index.js`
+
+Voici le fichier :
+
+```
+require('dotenv').config()
+
+const cors = require('cors')
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const postgraphile = require('./postgraphile')
+
+
+const { PORT } = process.env
+
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(postgraphile)
+
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+
+```
+
+
+A présent, nous allons créer une base de données avec une table que l'on nommera clients
 
 
 
