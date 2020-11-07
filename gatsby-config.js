@@ -29,6 +29,33 @@ module.exports = {
           },
         },
         {
+          resolve: `gatsby-remark-images`,
+          options: {
+            // It's important to specify the maxWidth (in pixels) of
+            // the content container as this plugin uses this as the
+            // base for generating different widths of each image.
+            maxWidth: 590,
+          },
+        },
+        {
+          resolve: `gatsby-remark-image-attributes`,
+          options: {
+
+            // ?Boolean=true
+            //   If true (the default), all CSS
+            //   property names will be recognized
+            //   as styleAttribute.
+            styleAttributes: true,
+
+            // ?Boolean=false
+            //   If true, all attributes that
+            //   aren't styleAttributes, will be
+            //   added as data-* attributes to the
+            //   image.
+            dataAttributes: false
+          }
+        },
+        {
           resolve: 'gatsby-remark-emojis',
         }],
       },

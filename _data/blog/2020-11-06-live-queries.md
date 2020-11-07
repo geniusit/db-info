@@ -220,9 +220,11 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 ```
 
 
-A présent, nous allons créer une base de données avec une table que l'on nommera clients
+##Création et exécution du schéma SQL avec Knex-Migrations
 
+A ce stade, voyons comment nous pouvons créer une base de données, un schéma SQL, une table allimentée par quelques données.
 
+Nous utiliserons pour cela les `migrations`
 
 
 Lectures : https://medium.com/open-graphql/graphql-subscriptions-vs-live-queries-e38302c7ab8e
