@@ -3,15 +3,19 @@ template: BlogPost
 path: /knex-migrations
 date: 2020-11-07T20:43:50.738Z
 title: Gérer vos migrations DB avec Knex
-thumbnail: /assets/292ac390940b.jpg
+thumbnail: /assets/migrations.png
 metaDescription: knexmigrations
 ---
 
 ## Introduction
 
+292ac390940b.jpg
+
 >Avant de commencer, précisions que cet article est un sous-post de [Construire une application web full-stack avec Postgraphile et React](/live-queries). Soyez certain d'avoir un serveur PostgreSQL en cours d'exécution sur votre ordinateur.
 
 [Knexjs](http://knexjs.org) est un constructeur de requêtes pour PostgreSQL, MSSQL, MySQL, MariaDB, SQLite3, Oracle et Amazon Redshift. C'est flexible, portable et fun à utiliser. Nous allons l'utiliser pour maintenir notre schéma de base de données.
+
+![Alt text here](/assets/knex.png#lightbox=true;display=block;margin-left=auto;margin-right=auto;width=50%)
 
 Knex-migrate garde un oeil sur vos changements de schémas et données, ce qui est très util lors de migration de base de données. Knex-migrate dispose de tous les fichiers et logs. Nous n'avons donc qu'à exécuter une commande et knex-migrate prendra soin de construire tous les schémas et les entrées de données statiques dans la base de données.
 
