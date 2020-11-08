@@ -91,5 +91,15 @@ module.exports = {
     `gatsby-image`,
     `gatsby-transformer-sharp`, 
     `gatsby-plugin-sharp`,
+    {
+      resolve: "gatsby-plugin-social-cards",
+      options: {
+
+        // author to use when no auth in frontmatter
+        defaultAuthor: "Andri Óskarsson",
+        // card design
+        design: "default", // 'default' or 'card'
+      },
+    },
   ],
 }

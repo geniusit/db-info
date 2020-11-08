@@ -23,6 +23,8 @@ export default function Template({
         <meta name="description" content={frontmatter.metaDescription} />
         <meta name="image" content={frontmatter.thumbnail} />
         <meta property="og:image" content={frontmatter.thumbnail} />
+        <meta name="twitter:card" content="summary_large_image" />
+		    <meta name="twitter:image" content={frontmatter.thumbnail} />
       </Helmet>
       <div className="blog-post-container">
         <article className="post">
