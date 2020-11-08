@@ -15,6 +15,7 @@ export default function Template({
   console.log(frontmatter.title)
   console.log(frontmatter.date)
   console.log(frontmatter.thumbnail)
+  console.log(frontmatter.socialcard)
   console.log("+++++++++++++++++++++++++")
   return (
     <Layout>
