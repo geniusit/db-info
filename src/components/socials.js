@@ -1,17 +1,26 @@
 import React from "react";
-import {
-    FacebookShareCount,
-    HatenaShareCount,
-    OKShareCount,
-    PinterestShareCount,
-    RedditShareCount,
-    TumblrShareCount,
-    VKShareCount
-  } from "react-share";
 
-export const Socials = () => (
-    <FacebookShareCount url={`https://www.facebook.com/heoheo.ola/`} />
-  
+export default () => (
+  <div className="iconContainer">
+      aaaazzzzeeexxx
+    <div className="iconRs">
+      <a href="https://twitter.com/BertrandDeweer">
+        <i className="fa fa-twitter "></i>
+      </a>
+    </div>
+    <div className="iconRs">
+      <a href="https://medium.com/@bertranddeweer">
+        <i className="fa fa-medium "></i>
+      </a>
+    </div>
+    <div className="iconRs">
+      <a href="https://github.com/geniusit">
+        <i className="fa fa-github "></i>
+      </a>
+    </div><div className="iconRs">
+      <a href="mailto:bertrand.deweer@gmail.com">
+        <i className="fa fa-envelope "></i>
+      </a>
+    </div>
+  </div>
 );
-
-export default Socials;

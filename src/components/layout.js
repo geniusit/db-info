@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import Navigation from "../components/navigation"
-import Socials from "../components/socials"
+import Socials from "./socials"
 import 'prismjs/themes/prism-okaidia.css';
 
 export default ({ children }) => {
@@ -27,9 +27,7 @@ export default ({ children }) => {
       {children}
       <footer className="site-footer">
         <p>&copy; {new Date().getFullYear()} Bertrand Deweer - db-info.be</p>
-        aaa
         <Socials />
-        
       </footer>
     </div>
   )
