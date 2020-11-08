@@ -1,7 +1,7 @@
 backend:
   name: github
   # change repo to your git repository url
-  repo: https://github.com/geniusit/db-info
+  repo: geniusit/db-info
   branch: main
 
 media_folder: static/assets
