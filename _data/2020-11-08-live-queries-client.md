@@ -8,3 +8,6 @@ metaDescription: livequeriesclient
 ---
 
 ## Introduction
+
+
+C'est pour bientot!
