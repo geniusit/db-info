@@ -2,6 +2,7 @@ backend:
   name: github
   # change repo to your git repository url
   repo: https://github.com/geniusit/db-info
+  branch: main
 
 media_folder: static/assets
 public_folder: /assets
@@ -56,7 +57,7 @@ collections:
       - name: path
         label: Path
         widget: string
-        pattern: [/]
+        pattern: ['.{8,}', "Must have at least 8 characters"]
         hint: "Path must start with /"
       - { name: date, label: Date, widget: datetime }
       - { name: title, label: Title }
