@@ -94,11 +94,11 @@ module.exports = {
     {
       resolve: "gatsby-plugin-social-cards",
       options: {
-        authorImage: "./static/assets/me.png",
+        authorImage: "./static/assets/server.jpeg",
         // author to use when no auth in frontmatter
-        defaultAuthor: "Andri Óskarsson",
+        defaultAuthor: "Bertrand Deweer",
         // card design
-        design: "default", // 'default' or 'card'
+        design: "card", // 'default' or 'card'
       },
     },
   ],
