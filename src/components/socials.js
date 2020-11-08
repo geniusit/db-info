@@ -2,7 +2,6 @@ import React from "react";
 
 export default () => (
   <div className="iconContainer">
-      aaaazzzzeeexxx
     <div className="iconRs">
       <a href="https://twitter.com/BertrandDeweer">
         <i className="fa fa-twitter "></i>
