@@ -9,8 +9,6 @@ metaDescription: knexmigrations
 
 ## Introduction
 
-292ac390940b.jpg
-
 >Avant de commencer, précisions que cet article est un sous-post de [Construire une application web full-stack avec Postgraphile et React](/live-queries). Soyez certain d'avoir un serveur PostgreSQL en cours d'exécution sur votre ordinateur.
 
 [Knexjs](http://knexjs.org) est un constructeur de requêtes pour PostgreSQL, MSSQL, MySQL, MariaDB, SQLite3, Oracle et Amazon Redshift. C'est flexible, portable et fun à utiliser. Nous allons l'utiliser pour maintenir notre schéma de base de données.

@@ -14,10 +14,6 @@ export default function Template({
       <Helmet>
         <title>{frontmatter.title} | {siteMetadata.title}</title>
         <meta name="description" content={frontmatter.metaDescription} />
-        <meta name="image" content={frontmatter.socialcard} />
-		    <meta property="og:image" content={frontmatter.socialcard} />
-		    <meta name="twitter:card" content="summary_large_image" />
-		    <meta name="twitter:image" content={frontmatter.socialcard} />
       </Helmet>
       <div className="blog-post-container">
         <article className="post">

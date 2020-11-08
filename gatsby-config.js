@@ -91,18 +91,5 @@ module.exports = {
     `gatsby-image`,
     `gatsby-transformer-sharp`, 
     `gatsby-plugin-sharp`,
-    {
-      resolve: "gatsby-plugin-social-cards",
-      options: {
-        // ommit to skip
-        authorImage: "./static/assets/me.png",
-        // image to use when no cover in frontmatter
-        backgroundImage: "./static/img/hvitserkur.JPG",
-        // author to use when no auth in frontmatter
-        defaultAuthor: "Andri Óskarsson",
-        // card design
-        design: "default", // 'default' or 'card'
-      },
-    },
   ],
 }
