@@ -3,7 +3,7 @@ template: BlogPost
 path: /live-queries
 date: 2020-11-06T17:15:50.738Z
 title: Les lives queries pour une application web réactive
-thumbnail: /assets/live.jpg
+thumbnail: /assets/server.jpeg
 metaDescription: livequeries
 ---
 
@@ -160,7 +160,7 @@ Dépendances dev
 
 Voici notre fichier `package.json`
 
-```
+```json
 {
   "name": "back",
   "version": "1.0.0",
@@ -197,7 +197,7 @@ Pour permettre au serveur de s'éxecuter, nous devons créer le fichier `src/ind
 
 Voici le fichier :
 
-```
+```javascript
 require('dotenv').config()
 
 const cors = require('cors')
@@ -219,12 +219,187 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
 ```
 
+Comme vous pouvez le voir, nous utilisons un fichier .env pour gérer les credentials. Ci-dessous notre fichier de référence. Placez-le dans le dossier `server`
+
+```
+CLIENT=pg
+PORT=8080
+ROOT_DATABASE_URL=postgres://postgres:changeme@0.0.0.0/securify
+DATABASE=securify
+PG_USER=postgres
+PASSWORD=changeme
+HOST=0.0.0.0
+PG_PORT=5432
+```
+
+ROOT_DATABASE_URL est nécessaire pour les live queries car nous avons besoin d'une élévation de droits pour le décodage logique.
 
 ##Création et exécution du schéma SQL avec Knex-Migrations
 
 A ce stade, voyons comment nous pouvons créer une base de données, un schéma SQL, une table allimentée par quelques données.
 
 Nous utiliserons pour cela les `migrations`
+
+J'ai écris un post séparé pour cela étant donné que c'est une étape optionnelle. Voici le lien : [Gérer vos migrations DB avec Knex](/knex-migrations/)
+
+Voici l'arborecense attendue : 
+
+```
+- Server
+  - db
+    - migrations
+    - seeds
+    knex.js
+  - src
+    - index.js
+  .env
+  knexfile.js
+```
+
+##Etape 4 : Intégration de PostGraphile pour activer graphiql
+
+Ayant notre schéma correctement mis à jour en base de donnée avec quelques données, nous pouvons activer graphQL sur la partie serveur. Nous utilisons postgraphile. Nous avons déjà installé les packages postgraphile.
+La configuration de postgraphile est très simple, et ne prend que quelques minutes.
+
+Pour pouvoir utiliser les lives queries, il y a  deux dépendances à ajouter :
+
+```bash
+npm i @graphile/pg-pubsub @graphile/subscriptions-lds
+```
+
+
+Premièrement, créons un nouveau fichier `src/postgraphile.js` constituant les détails de connexion vers notre base de données ainsi que les options graphQL. Pour cela copiez/collez simplement le fichier suivant :
+
+```javascript
+const { postgraphile } = require('postgraphile');
+
+const postgraphileOptions = {
+  // Enable live support in PostGraphile
+  live: true,
+  // We need elevated privileges for logical decoding
+  ownerConnectionString: process.env.ROOT_DATABASE_URL,
+  // Add this plugin
+  appendPlugins: [
+    //...
+    require('@graphile/subscriptions-lds').default,
+  ],
+};
+
+const { DATABASE, PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
+
+module.exports = postgraphile(
+  {
+    database: DATABASE,
+    user: PG_USER,
+    password: PASSWORD,
+    host: HOST,
+    port: PG_PORT,
+  },
+  'public',
+  postgraphileOptions
+);
+```
+
+Ensuite, importons cela vers notre fichier `src/index.js`
+
+```javascript
+const postgraphile = require('./postgraphile')
+```
+
+La dernière étape est de l'intégrer avec notre application.
+
+```javascript
+app.use(postgraphile)
+```
+
+Notre fichier `src/index.js` devrait ressembler à ceci :
+
+```javascript
+require('dotenv').config()
+
+const cors = require('cors')
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const postgraphile = require('./postgraphile')
+
+
+const { PORT } = process.env
+
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(postgraphile)
+
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+```
+
+
+
+Finalement, démarrons notre server avec `npm start` et rendez-vous sur l'URL suivante pour accéder à `gtraphql` : (http://localhost:8080/graphiql)[http://localhost:8080/graphiql]
+
+Le client graphiql ne supporte pas les live queries. Pour cela, nous pouvons utiliser un autre client graphql : `graphql-playground-react`. Pour la documentation c'est [ici](https://www.npmjs.com/package/graphql-playground-react)
+
+Cloner le repository git dans un nouveau dossier : 
+
+
+```bash
+git clone https://github.com/graphql/graphql-playground.git
+```
+
+Modifiez ensuite le fichier `index.js` avec le endpoint correspondant. A savoir `http://localhost:8080/graphql`.
+
+Démarrer ensuite le client playground graphql via la commande `npm start`
+
+Connectez-vous à l'adresse [http://localhost:3000/](http://localhost:3000/).
+
+Vous devriez être connecté. L'URL du serveur doit être `http://127.0.0.1:8080/graphql`
+
+Dans la partie gauche, encodez cette requête :
+
+```
+subscription getUsers {
+    allUsers {
+      nodes {
+        email
+        id
+        name
+        createdAt
+      }
+    }
+  }
+```
+
+Cliquez sur le bouton play au centre de la fenêtre. Vous devriez voir apparaitre le résusltat suivant :
+
+```
+{
+  "data": {
+    "allUsers": {
+      "nodes": [
+        {
+          "email": "bertrand.deweer@gmail.com",
+          "id": 1,
+          "name": "Bertrand Deweer",
+          "createdAt": "2020-10-31T23:52:16.101957+00:00"
+        }
+      ]
+    }
+  }
+}
+```
+
+Suivi de `Listening ...`
+
+Cela signifie que le client reste en écoute permanente. Allez dans PgAdmin, dans la table users et modifiez par votre nom. Sauvegardez (F6)
+
+Le client GraphQL se voit automatiquement notifié avec le changement correspondant.
+
+Voici pour la partie serveur! Félicitations si vous êtes parvenu jusqu'ici! Vous disposez d'un serveur `graphql` connecté à un serveur `postgres` via `postgraphile`.
+
+Dans la seconde partie, nous allons créer un client pour notre application. Nous utiliserons React + TypeScript, GraphQL et Apollo pour construire le client.
+
 
 
 Lectures : https://medium.com/open-graphql/graphql-subscriptions-vs-live-queries-e38302c7ab8e
