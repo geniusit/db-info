@@ -10,13 +10,6 @@ export default function Template({
   const { siteMetadata } = site
   const { frontmatter, html } = markdownRemark
 
-  console.log("-------------------------")
-  console.log(frontmatter.metaDescription)
-  console.log(frontmatter.title)
-  console.log(frontmatter.date)
-  console.log(frontmatter.thumbnail)
-  console.log(frontmatter.socialcard)
-  console.log("+++++++++++++++++++++++++")
   return (
     <Layout>
       <Helmet>

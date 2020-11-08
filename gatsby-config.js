@@ -70,6 +70,16 @@ module.exports = {
       }
     },
     {
+      resolve: `gatsby-plugin-social-cards`,
+      options: {
+        authorImage: "./static/assets/server.jpeg",
+        // author to use when no auth in frontmatter
+        defaultAuthor: "Bertrand Deweer",
+        // card design
+        design: "card", // 'default' or 'card'
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Delog GatbsyJS Starter`,
@@ -91,15 +101,5 @@ module.exports = {
     `gatsby-image`,
     `gatsby-transformer-sharp`, 
     `gatsby-plugin-sharp`,
-    {
-      resolve: "gatsby-plugin-social-cards",
-      options: {
-        authorImage: "./static/assets/server.jpeg",
-        // author to use when no auth in frontmatter
-        defaultAuthor: "Bertrand Deweer",
-        // card design
-        design: "card", // 'default' or 'card'
-      },
-    },
   ],
 }
