@@ -9,11 +9,20 @@ export default function Template({
   const { site, markdownRemark } = data // data.markdownRemark holds your post data
   const { siteMetadata } = site
   const { frontmatter, html } = markdownRemark
+
+  console.log("-------------------------")
+  console.log(frontmatter.metaDescription)
+  console.log(frontmatter.title)
+  console.log(frontmatter.date)
+  console.log(frontmatter.thumbnail)
+  console.log("+++++++++++++++++++++++++")
   return (
     <Layout>
       <Helmet>
         <title>{frontmatter.title} | {siteMetadata.title}</title>
         <meta name="description" content={frontmatter.metaDescription} />
+        <meta name="image" content={frontmatter.thumbnail} />
+        <meta property="og:image" content={frontmatter.thumbnail} />
       </Helmet>
       <div className="blog-post-container">
         <article className="post">
