@@ -19,7 +19,7 @@ Un client se verra automatiquement notifé d'une modification en base de donnée
 Bien qu'il soit possible de demander à l'application cliente de requêter le serveur toutes les x secondes (long polling), il est préférable que le serveur envoie une notification dès que l'état de la donnée à changé.
 Vous l'avez compris, les lives queries sont un outil super cool pour les applications front-end.
 
-Le but de cette série d'article est donc de monter une stack applicative complète en utilisant les lives queries! Notre unité de persistance sera une base de données de type PostgreSQL.
+Le but de cette série d'articles est donc de monter une stack applicative complète en utilisant les lives queries! Notre unité de persistance sera une base de données de type PostgreSQL.
 
 Après quelques recherches, j'ai trouvé trois outils différents pouvant accomplir cette tâche.
 
