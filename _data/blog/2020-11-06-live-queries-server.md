@@ -444,9 +444,9 @@ Cliquez sur le bouton play. Vous devriez voir apparaitre le résusltat suivant :
 }
 ```
 &nbsp;  
-Vous avez exécuté une `subscription` et le client reste en écoute permanente. 
+Vous avez exécuté une `subscription`. Le client reste en écoute permanente. 
 &nbsp;  
-Retournez dans `PgAdmin`, dans la table users et modifiez par votre nom. Sauvegardez (F6).
+Retournez dans `PgAdmin`, dans la table `users` et modifiez la valeur actuelle par votre nom. Sauvegardez (F6).
 &nbsp;  
 Le client GraphQL se voit automatiquement notifié avec le changement correspondant!
 &nbsp;  
