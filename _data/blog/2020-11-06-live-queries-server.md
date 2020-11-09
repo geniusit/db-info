@@ -293,11 +293,12 @@ PG_PORT=5432
 &nbsp;  
 ROOT_DATABASE_URL est nécessaire pour les live queries car nous avons besoin d'une élévation de droits pour le décodage logique.
 &nbsp;  
-Et voici! Vous pouvez utiliser les commandes suivantes pour démarrer le serveur :
+Vous pouvez utiliser les commandes suivantes pour démarrer le serveur :
 
 ```bash
 yarn start
 ```
+&nbsp;  
 ou bien
 ```bash
 npm run start
