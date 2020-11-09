@@ -1,8 +1,8 @@
 ---
 template: BlogPost
 path: /live-queries-server
-date: 2020-11-06T17:15:50.738Z
-title: Les lives queries pour une application web réactive - Partie 2
+date: 2020-11-06T13:15:50.738Z
+title: Les lives queries pour une application web réactive - Partie 1
 thumbnail: /assets/server.jpeg
 metaDescription: livequeries
 ---
