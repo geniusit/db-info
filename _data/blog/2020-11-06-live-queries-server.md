@@ -195,7 +195,7 @@ Vous devriez recevoir le message suivant en retour : `NOTICE:  Everything seems 
 Si tel est le cas, c'est que votre base de données est configurée correctement pour les live queries.
 Si au contraire, vous avez une erreur, je vous invite à reparcourir ce guide afin de vérifier que vous n'avez rien oublié.
 
-##Création du servfeur NodeJS
+##Création du serveur NodeJS
 
 Comme expliqué dans l'introduction, nous utiliserons un framework rapide et léger pour NodeJS. J'ai nommé ExpressJS.
 Par ici pour la documentation : *https://expressjs.com* 
@@ -205,7 +205,7 @@ Premièrement, créer un dossier `server` et déplaçons nous à l'intérieur.
 
 ```mkdir server && cd $_```
 
-Créer le projet avec la commande suivante (Vous pouvez accepter les valeurs par défaut)
+Créer le projet avec la commande suivante (Vous pouvez accepter les valeurs par défaut).
 
 ```npm init```
 
