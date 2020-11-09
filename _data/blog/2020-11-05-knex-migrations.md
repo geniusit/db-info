@@ -1,7 +1,7 @@
 ---
 template: BlogPost
 path: /knex-migrations
-date: 2020-11-07T20:43:50.738Z
+date: 2020-11-05T20:43:50.738Z
 title: Gérer vos migrations DB avec Knex
 thumbnail: /assets/migrations.png
 metaDescription: knexmigrations
