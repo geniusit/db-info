@@ -457,5 +457,6 @@ Vous disposez d'un serveur `GraphQL` connecté à un serveur `PostgreSQL` via `P
 &nbsp;  
 &nbsp;  
 Dans la seconde partie, nous allons créer un client web pour notre stack. Nous utiliserons React + TypeScript, GraphQL et Apollo.
+Pour la suite, c'est donc par ici : [Les lives queries pour une application web réactive - Partie 2](/live-queries-client)
 &nbsp;  
 A très vite et merci pour la lecture!
