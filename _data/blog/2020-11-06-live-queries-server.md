@@ -9,13 +9,13 @@ metaDescription: livequeries
 
 ## Introduction
 
-Bienvenue dans mon premier article! Nous allons discuter de live queries. Mais premièrement, qu'est ce qu'une live query ?
+Bienvenue dans mon premier article! Nous allons discuter de lives queries. Mais premièrement, qu'est ce qu'une live query ?
 
 >*A “live query” monitors the query a user provides and gives the client an updated version whenever the query would return a different result.*
 
 Cela signifie qu'une application cliente n'a plus besoin de manuellement rafraichir les données pour en récupérer l'état à l'instant T. 
 
-Un client se verra automatiquement notifé d'une modification en base de données.
+Un client se verra automatiquement notifé lors d'un changement d'état d'une donnée sur laquelle il a étable une souscription.
 Bien qu'il soit possible de demander à l'application cliente de requêter le serveur toutes les x secondes (long polling), il est préférable que le serveur envoie une notification dès que l'état de la donnée à changé.
 Vous l'avez compris, les lives queries sont un outil super cool pour les applications front-end.
 
@@ -29,19 +29,19 @@ A savoir :
  * [Prisma](https://www.prisma.io/)
 
 Vous trouverez des comparaisons de ces outils sur Reddit par exemple. J'ai choisi d'utiliser PostGraphile car je trouve la solution très légère.
-Mais qu'est ce qu'est réellement PostGraphile ? Et quel est le lien entre PostGraphile et es lives queries ?
+Mais qu'est ce qu'est réellement PostGraphile ? Et quel est le lien entre PostGraphile et les lives queries ?
 
 Voici comment est défini PostGraphile :
 
 >*PostGraphile (formerly PostGraphQL) builds a powerful, extensible and performant GraphQL API from a PostgreSQL schema in seconds; saving you weeks if not months of development time.*
 
-Il s'agit donc d'un outil qui va exposer un schéma PostgreSQL sous forme d'une API GraphQL. PostGraphile détecte automatiquement les tables, colonnes, index, realtions, vues, types, fonctions, commentaires et bien plus. Il construit un serveur GraphQL sur base de tout cela. Le serveur GraphQL se met automatiquement à jour lors de modifications en base de données. Pas besoin de le redémarrer. Les lives queries sont une spécification intégrante de GraphQL. Le serveur GraphQL servira de pont entre la partie serveur et la partie cliente.
+Il s'agit donc d'un outil qui va exposer un schéma PostgreSQL sous forme d'une API GraphQL. PostGraphile détecte automatiquement les tables, colonnes, indexes, realtions, vues, types, fonctions, commentaires et bien plus. Il construit un serveur GraphQL sur base de tout cela. Le serveur GraphQL se met automatiquement à jour lors de modifications en base de données. Pas besoin de le redémarrer. Les lives queries sont une spécification intégrante de GraphQL. Le serveur GraphQL servira de pont entre la partie serveur et la partie cliente.
 
 Le développment de la stack complète sera découpé en deux articles distincts. Un article pour la partie serveur et un article pour la partie cliente.
 
 Voici la liste des choses que nous allons mettre en place dans cette première partie :
 
-* Une base de données de type PostgreSQL + un client. J'ai choisi PgAdmin 4
+* Une base de données de type PostgreSQL + un client SQL. J'ai choisi PgAdmin 4
 * La création d'un schéma SQL via l'outil Knex.js
 * La remontée des WAL (Write Applications Logs) 
 * Un serveur de type NodeJS sur lequel nous installerons PostGraphile. Nous utiliserons le framework ExpressJS.
@@ -53,7 +53,7 @@ Démarrons sans plus attendre!
 Commençons par créer et configurer la base. 
 Il est important de préciser qu'il est obligatoire d'utiliser une base de données de type PostgreSQL >= 9.4.
 Toutes les commandes et manipulations sont effectuées via un système Linux Fedora 31.
-L'installation se fait docker et docker-compose. Assurez-vous de disposer de ces deux outils prêts à l'emploi.
+L'installation se fait via docker et docker-compose. Assurez-vous de disposer de ces deux outils prêts à l'emploi.
 Une petite vérification peu se faire via ces deux commandes :
 
 ```bash
@@ -118,7 +118,7 @@ Rien de particulier si ce n'est la ligne :
 ```
 &nbsp;  
 Il s'agit de la surchage du fichier `postgresql.conf` par défaut. Etant donné qu'il n'est pas possible d'éditer le fichier dans le conteneur (vim, nano, ... indisponible), nous utilisons cette technique de surcharge.
-Veillez donc à avoir votre fichier `postgresql.conf` dans le même dossier que le `docker-compose.yml`.
+Veillez donc à avoir votre fichier `postgresql.conf` dans le même dossier que le fichier `docker-compose.yml`.
 &nbsp;  
 &nbsp;  
 Nous devons activer une fonction de PostgreSQL appelée 'Logical Decoding'. 
@@ -163,8 +163,8 @@ Installons le package via
 apt-get install postgresql-13-wal2json
 ```
 &nbsp;  
-Une fois le package correctement installé, sortez du conteneur via la commande `exit`.
-Il est temps de se connecter à la base pour véfifier que tout est en place.
+Une fois le package correctement installé, sortez du conteneur avec la commande `exit`.
+Il est temps de se connecter à la base de données pour véfifier que tout est en place.
 Rendez-vous sur *http://localhost:5050*.
 Le login et mot de passe se situent dans le fichier `docker-compose.yml` (respectivement `postgresql` et `changeme`).
 
@@ -192,7 +192,7 @@ $$ LANGUAGE plpgsql;
 ```
 &nbsp;  
 Vous devriez recevoir le message suivant en retour : `NOTICE:  Everything seems to be in order.`
-Si tel est le cas, c'est que votre base de données est configurée correctement pour les live queries.
+Si c'est le cas, votre base de données est configurée correctement pour pouvoir utiliser les lives queries.
 Si au contraire, vous avez une erreur, je vous invite à reparcourir ce guide afin de vérifier que vous n'avez rien oublié.
 
 ##Création du serveur NodeJS
@@ -219,7 +219,7 @@ Un fichier `package.json` a été créé. Installons maintenant les dépendances
 &nbsp;  
 *```npm i nodemon dotenv -D```*
 
-Ajoutez les scripts `start` et `watch` au fichier généré `package.json`. Ce qui donne ce résultat :
+Ajoutez les scripts `start` et `watch` au fichier `package.json` généré. Ce qui donne ce résultat :
 
 ```json
 {
@@ -275,7 +275,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 ```
 &nbsp;  
-Comme vous pouvez le voir, nous utilisons un fichier `.env` pour gérer les credentials. Ci-dessous notre fichier de référence. Placez-le dans le dossier `server` (racine du projet)
+Comme vous pouvez le voir, nous utilisons un fichier `.env` pour gérer les credentials, adresses, ports et autres. Ci-dessous notre fichier de référence. Placez-le dans le dossier `server` (racine du projet)
 
 ```bash
 vi .env
@@ -291,9 +291,9 @@ HOST=0.0.0.0
 PG_PORT=5432
 ```
 &nbsp;  
-ROOT_DATABASE_URL est nécessaire pour les live queries car nous avons besoin d'une élévation de droits pour le décodage logique.
+ROOT_DATABASE_URL est nécessaire pour les lives queries car nous avons besoin d'une élévation de droits pour le décodage logique.
 &nbsp;  
-Vous pouvez utiliser les commandes suivantes pour démarrer le serveur :
+Vous pouvez utiliser une des commandes suivantes pour démarrer le serveur :
 
 ```bash
 yarn start
@@ -306,7 +306,7 @@ npm run start
 &nbsp;  
 ##Création et exécution du schéma SQL avec Knex-Migrations
 
-A ce stade, voyons comment nous pouvons créer une base de données, un schéma SQL, une table allimentée par quelques données.
+A ce stade, voyons comment nous pouvons créer une base de données, un schéma SQL ainsi qu'une table contenant quelques données.
 
 Nous utiliserons pour cela les `migrations`
 
@@ -329,9 +329,9 @@ Voici l'arborecense attendue :
 ##Intégration et configuration de PostGraphile
 
 Ayant un schéma correctement créé en base et avec quelques données, nous pouvons commencer à utiliser `PostGraphile`. Nous avons déjà installé une partie des packages nécessaires.
-La configuration ainsi que l'ajout de la gestion des live queries est très simple, et ne prend que quelques minutes.
+La configuration ainsi que l'ajout des lives queries est très simple, et ne prend que quelques minutes.
 
-Pour pouvoir utiliser les lives queries, il y a deux dépendances à ajouter :
+Il y a tout d'abord deux dépendances à ajouter :
 
 ```bash
 npm i @graphile/pg-pubsub @graphile/subscriptions-lds
@@ -378,7 +378,7 @@ Ensuite, importons-le dans notre fichier `src/index.js` en y ajoutant la ligne s
 ```javascript
 const postgraphile = require('./postgraphile')
 ```
-
+&nbsp;  
 La dernière étape est de l'intégrer avec notre application.
 
 ```javascript
@@ -408,7 +408,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 &nbsp;  
 Finalement, démarrons notre server avec `npm run start` et rendez-vous sur l'URL suivante pour accéder à `Graphiql` : [http://localhost:8080/graphiql](http://localhost:8080/graphiql)
 
-C'est un client dans lequel vous pouvez saisir vos requêtes. Il existe un autre client que j'aime utiliser : [graphql-playground](https://github.com/graphql/graphql-playground)
+C'est un client `GraphQL` dans lequel vous pouvez saisir vos requêtes. Il existe un autre client que j'aime utiliser : [graphql-playground](https://github.com/graphql/graphql-playground)
 
 Dans la partie gauche, encodez cette requête :
 
@@ -424,7 +424,7 @@ subscription getUsers {
     }
   }
 ```
-
+&nbsp;  
 Cliquez sur le bouton play. Vous devriez voir apparaitre le résusltat suivant :
 
 ```
@@ -446,7 +446,7 @@ Cliquez sur le bouton play. Vous devriez voir apparaitre le résusltat suivant :
 &nbsp;  
 Vous avez exécuté une `subscription`. Le client reste en écoute permanente. 
 &nbsp;  
-Retournez dans `PgAdmin`, dans la table `users` et modifiez la valeur actuelle par votre nom. Sauvegardez (F6).
+Retournez dans `PgAdmin`, dans la table `users` et modifiez la valeur actuelle de la colonne `name` par votre nom. Sauvegardez (F6).
 &nbsp;  
 Le client GraphQL se voit automatiquement notifié avec le changement correspondant!
 &nbsp;  
@@ -456,5 +456,6 @@ Voici pour la partie serveur! Félicitations si vous êtes parvenu jusqu'ici!
 Vous disposez d'un serveur `GraphQL` connecté à un serveur `PostgreSQL` via `PostGraphile`.
 &nbsp;  
 &nbsp;  
-Dans la seconde partie, nous allons créer un client pour notre application. Nous utiliserons React + TypeScript, GraphQL et Apollo pour construire le client.
-
+Dans la seconde partie, nous allons créer un client web pour notre stack. Nous utiliserons React + TypeScript, GraphQL et Apollo.
+&nbsp;  
+A très vite et merci pour la lecture!
