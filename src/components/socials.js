@@ -8,6 +8,11 @@ export default () => (
       </a>
     </div>
     <div className="iconRs">
+      <a href="https://www.linkedin.com/in/bertrand-deweer-9358b387/">
+        <i className="fa fa-linkedin "></i>
+      </a>
+    </div>
+    <div className="iconRs">
       <a href="https://medium.com/@bertranddeweer">
         <i className="fa fa-medium "></i>
       </a>
