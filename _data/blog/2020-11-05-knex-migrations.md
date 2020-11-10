@@ -9,31 +9,31 @@ metaDescription: knexmigrations
 
 ## Introduction
 
->Avant de commencer, précisions que cet article est un sous-post de [Construire une application web full-stack avec Postgraphile et React](/live-queries). Soyez certain d'avoir un serveur PostgreSQL en cours d'exécution sur votre ordinateur.
+>Avant de commencer, précisions que cet article est un sous-post de [Les lives queries pour une application web réactive - Partie 1](/live-queries-server). Soyez certain d'avoir un serveur PostgreSQL en cours d'exécution sur votre ordinateur.
 
-[Knexjs](http://knexjs.org) est un constructeur de requêtes pour PostgreSQL, MSSQL, MySQL, MariaDB, SQLite3, Oracle et Amazon Redshift. C'est flexible, portable et fun à utiliser. Nous allons l'utiliser pour maintenir notre schéma de base de données.
+[Knex.js](http://knexjs.org) est un constructeur de requêtes pour PostgreSQL, MSSQL, MySQL, MariaDB, SQLite3, Oracle et Amazon Redshift. C'est flexible, portable et fun à utiliser. Nous allons l'utiliser pour maintenir notre schéma de base de données.
 
 ![Alt text here](/assets/knex.png#lightbox=true;display=block;margin-left=auto;margin-right=auto;width=50%)
 
-Knex-migrate garde un oeil sur vos changements de schémas et données, ce qui est très util lors de migration de base de données. Knex-migrate dispose de tous les fichiers et logs. Nous n'avons donc qu'à exécuter une commande et knex-migrate prendra soin de construire tous les schémas et les entrées de données statiques dans la base de données.
+`Knex-migrate` garde un oeil sur vos changements de schémas et données, ce qui est très utile lors de migration de base de données. `Knex-migrate` dispose de tous les fichiers et logs. Nous n'avons donc qu'à exécuter une commande et `knex-migrate` prendra soin de construire tous les schémas et les entrées de données statiques dans la base de données.
 
 Un avantage majeur est que nous pouvons cloner notre projet dans un nouvel environnement pour ensuite exécuter les scripts knex migrations. Knex prendra soin de tout le reste.
 
-Démarrons donc avec notre création de schéma à l'aide de knex-migrate. Nous devons être certain d'avoir knex et knex-migrate installés dans notre projet. Si pas, nous devons exécuter la commande suivante :
+Démarrons donc avec notre création de schéma à l'aide de `knex-migrate`. Nous devons être certain d'avoir `knex` et `knex-migrate` installés dans notre projet. Si pas, nous devons exécuter la commande suivante :
 
 
 
 ```bash
 npm install knex knex-migrate
 ```
-
-Naviguons vers le dossier `server` et lançons la commande suivate :
+&nbsp;  
+Lançons ensuite l'initialisation avec : 
 
 ```npx
 npx knex init
 ```
-
-Cette commande a pour effet de générer le fichier `knexfile.js` sous le dossier `server`. C'est un fichier auto-généré par `knex`, lequel inclus toutes les configurations pour se connecter à la base de données selon l'environnement tel que développement, recette, pré-production, production. J'ai mis à jour la section connexion de développement dans le fichier `knexfile.js` afin de se connecter à notre base postgres. Le fichier doit donc ressembler à ceci :
+&nbsp;  
+Cette commande a pour effet de générer le fichier `knexfile.js`. C'est un fichier auto-généré par `knex`, lequel inclus toutes les configurations pour se connecter à la base de données selon l'environnement tel que développement, recette, pré-production, production. J'ai mis à jour la section développement. Le fichier doit donc ressembler à ceci :
 
 ```javascript
 require('dotenv').config()
@@ -91,11 +91,9 @@ module.exports = {
     },
 }
 ```
-&nbsp;
-
-Voici également le fichier .env faisant référence.
-
-&nbsp;
+&nbsp;  
+Voici également le fichier `.env` faisant référence.
+&nbsp;  
 ```
 CLIENT=pg
 PORT=8080
@@ -106,24 +104,23 @@ PASSWORD=changeme
 HOST=0.0.0.0
 PG_PORT=5432
 ```
-
-Mettez à jour ces valeurs selon la configuration de votre base de données et de votre environnement. Suivant ce fichier de configuration, vous devez créer les dossiers `migrations` et `seeds` sous le dossier `server/db`.
+&nbsp;  
+Mettez à jour ces valeurs selon la configuration de votre base de données et de votre environnement. Suivant ce fichier de configuration, vous devez créer les dossiers `migrations` et `seeds` sous le dossier `db` que vous devez également créer.
 
 `migrations` contiendra les fichiers déterminants notre schéma. `seeds` contiendra les fichiers contenant nos données à mettre à jour dans la base de données.
-
-&nbsp;
-A présent, pour utiliser la configuration de connexion avec `knex`, nous devons créer le fichier `knex.js` sous `src/db`. Ce fichier exportera un module de connexion basé sur l'environnement.
+&nbsp;  
+A présent, pour utiliser la configuration de connexion avec `knex`, nous devons créer le fichier `knex.js` dans `db`. Ce fichier exportera un module de connexions basé sur l'environnement.
 
 ```javascript
 const environment = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[environment]
 module.exports = require('knex')(config)
 ```
-
+&nbsp;  
 A présent, notre arborécense devrait ressemble à ceci :
 
 ```
-- Server
+- server
   - db
     - migrations
     - seeds
@@ -133,27 +130,20 @@ A présent, notre arborécense devrait ressemble à ceci :
   .env
   knexfile.js
 ```
-
-A ce stade, nous allons créer les tables dans notre de données en utilisant `knex-migrate`. Les données seront également insérées. Pour plus d'informations concernant `knex schema`, rendez-vous sur : [http://knexjs.org/#Schema](http://knexjs.org/#Schema)
-
-&nbsp;
-
-
+&nbsp;  
+A ce stade, nous allons créer les tables dans notre base de données en utilisant `knex-migrate`. Les données seront également insérées. Pour plus d'informations concernant `knex schema`, rendez-vous sur : [http://knexjs.org/#Schema](http://knexjs.org/#Schema)
+&nbsp;  
 Afin de créer la migration de schéma, nous avons besoin de lancer la commande qui créera un fichier auto-généré sous la dossier migration avec un date timestamp dans le nom de fichier.
 
-Par exemple : For example: *20201031221921_migration_create_table.js*
+Par exemple : *20201031221921_migration_create_table.js*
 
-&nbsp;
-
-Voici la commande permettant de créer le fichier de migration:
+Voici la commande en question :
 
 ```bash
 knex migrate:make migration_create_table
 ```
-
-&nbsp;
-
-Voici le fichier *`20201031221921_migration_create_table.js`* avec les détails du schéma voulu.
+&nbsp;  
+Voici le fichier *`20201031221921_migration_create_table.js`* avec les détails du schéma attendu.
 
 ```javascript
 exports.up = function(knex) {
@@ -202,20 +192,20 @@ exports.down = function(knex) {
     return knex.schema.dropTable('posts').dropTable('users').dropTable('comments')
 }
 ```
-
-Afin de mettre à jour ce schéma vers notre base de données postgres, nous devons exécuter la commande suivante :
+&nbsp;  
+Afin de mettre à jour ce schéma vers notre base de données `PostgreSQL`, nous devons exécuter la commande suivante :
 
 ```bash
 npx knex migrate:latest
 ```
-
-Retournons dans PgAdmin afin de voir que la commande `knex-migrate` a correctement créé les tables en accord avec le schéma configuré.
+&nbsp;  
+Retournons dans `PgAdmin` afin de voir que la commande `knex-migrate` a correctement créé les tables en accord avec le schéma configuré.
 
 
 ![Alt text here](/assets/knex-migrate.png#lightbox=true;display=block;margin-left=auto;margin-right=auto;width=20%)
 
 
-Maintenant que nos tables sont prêtes, nous pouvons y insérer des données en utilisant `seeds`. Nous allons créer deux fichier seeds: un pour l'utilisateur et un autre pour le post. Voici les commandes et fichiers d'exemples créés.
+Maintenant que nos tables sont prêtes, nous pouvons y insérer des données en utilisant `seeds`. Nous allons créer deux fichier seeds ; un pour l'utilisateur et un autre pour le post. Voici les commandes et fichiers d'exemples créés.
 
 ```bash
 npx knex seed:make 01_users
@@ -224,18 +214,14 @@ npx knex seed:make 01_users
 ```bash
 npx knex seed:make 02_posts
 ```
+&nbsp;  
+Contrairement à la commande `migration`, ces commandes vont créer des fichiers auto-générés dans `seeds`.
 
-Contrairement à la commande `migration`, ces commandes vont créer des fichiers auto générés dans `seeds`.
+Dans notre cas : *`01_users.js`* et *`02_posts.js`*
 
-Dans notre cas : *01_users.js and 02_posts.js*
+Une chose importante à retenir est que le nom des fichiers `seeds` doivent démarrer avec un nombre incrémental. Plus de détails ici : [http://knexjs.org/#Seeds-CLI](http://knexjs.org/#Seeds-CLI).
 
-
-One important thing to remember while creating seed files is to have the filename start with an incremental number, for chronology. Read more details on this here: http://knexjs.org/#Seeds-CLI.
-Here are the sample seed files I have created to insert users and one blog associated with that user:
-
-Une chose importante à retenir est que le nom des fichiers seeds doivent démarrer avec un nombre incrémental. Plus de détails ici : [http://knexjs.org/#Seeds-CLI](http://knexjs.org/#Seeds-CLI).
-
-Voici les fichiers seed d'exemple créés pour insérer des utilisateurs avec un blog qui lui est associé.
+Voici les fichiers `seeds` d'exemple créés pour insérer des utilisateurs avec un blog lui étant associé.
 
 ```javascript
 exports.seed = function(knex) {
@@ -247,9 +233,9 @@ exports.seed = function(knex) {
             return knex('users').insert([
                 {
                     id: 1,
-                    name: 'Pratik Agashe',
-                    email: 'pratik@heady.io',
-                    password: 'pratik',
+                    name: 'Bertrand Deweer',
+                    email: 'bertrand.deweer@gmail.com',
+                    password: 'bertrand',
                 },
             ])
         })
@@ -275,7 +261,7 @@ exports.seed = function(knex) {
         })
 }
 ```
-
+&nbsp;  
 J'utilise la fonction `del()` afin de supprimer les entrées existantes. Vous pouvez supprimer cette instruction lors d'un script de mise à jour.
 
 Lançons à présent la commande suivante pour exécuter les fichiers seeds :
@@ -283,14 +269,13 @@ Lançons à présent la commande suivante pour exécuter les fichiers seeds :
 ```bash
 npx knex seed:run
 ```
-
-
+&nbsp;  
 ![Alt text here](/assets/users.png#lightbox=true;display=block;margin-left=auto;margin-right=auto;width=100%)
 
 
 
 ![Alt text here](/assets/posts.png#lightbox=true;display=block;margin-left=auto;margin-right=auto;width=100%)
 
-J'espère que cet article vous aura donnée une idée de ce que pouvez faire avec knex-migrate pour la construction de vos schémas et pour vous permettre de suivre leurs évolutions.
+J'espère que cet article vous aura donné une idée de ce que pouvez faire avec `knex-migrate` pour la construction de vos schémas et pour vous permettre de suivre leurs évolutions.
 
 Merci!
