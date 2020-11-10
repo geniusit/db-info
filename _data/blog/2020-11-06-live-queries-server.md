@@ -15,7 +15,7 @@ Bienvenue dans mon premier article! Nous allons discuter de lives queries. Mais 
 
 Cela signifie qu'une application cliente n'a plus besoin de manuellement rafraichir les données pour en récupérer l'état à l'instant T. 
 
-Un client se verra automatiquement notifé lors d'un changement d'état d'une donnée sur laquelle il a étable une souscription.
+Un client se verra automatiquement notifé lors d'un changement d'état d'une donnée sur laquelle une souscription a été établie.
 Bien qu'il soit possible de demander à l'application cliente de requêter le serveur toutes les x secondes (long polling), il est préférable que le serveur envoie une notification dès que l'état de la donnée à changé.
 Vous l'avez compris, les lives queries sont un outil super cool pour les applications front-end.
 
