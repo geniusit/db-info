@@ -24,7 +24,7 @@ Le but de cette série d'articles est donc de monter une stack applicative compl
 Après quelques recherches, j'ai trouvé trois outils différents pouvant accomplir cette tâche.
 
 A savoir :
- * [Hazura](https://hasura.io/)
+ * [Hasura](https://hasura.io/)
  * [PostGraphile](https://www.graphile.org/postgraphile/)
  * [Prisma](https://www.prisma.io/)
 
