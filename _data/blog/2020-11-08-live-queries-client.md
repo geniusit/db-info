@@ -99,7 +99,7 @@ generates:
       withHooks: true
 ```
 &nbsp;  
-Pour disposer de `queries`, `mutations` et `subscriptions` basés sur les `hooks`, nous avons ajouté leurs dossiers respectifs.
+Pour disposer de `queries`, `mutations` et `subscriptions` basées sur les `hooks`, nous avons ajouté leurs dossiers respectifs.
 Pour valider tout cela, faites un 
 ```bash
 npm i
