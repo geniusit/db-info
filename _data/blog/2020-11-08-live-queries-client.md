@@ -234,6 +234,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 export default client;
 ```
+&nbsp;  
 Ensuite, nous pouvons importer le composant `Users` ainsi que le composant `ApolloClient` dans le fichier `App.tsx`.
 Voici le résultat :
 ```javascript
@@ -293,7 +294,7 @@ Félications!
 
 ## Conclusion et remerciements 
 Les `lives queries` sont un outil vraiment intéressant pour les applications front-end. Spécialement utiles pour les applications utilisées en interne dans les entreprises. Prenez garde si vous ouvrez une application utilisant les `lives queries` sur internet avec potentiellement des millions d'utilisateurs. 
-La technologie est encore à ces débuts et il n'existe pas de norme où de façon standard de l'implémenter.
+La technologie est encore à ces débuts et il n'existe pas de norme ou de façon standard de l'implémenter.
 Il convient également de bien comprendre la différence entre les `lives queries` et les  `subscriptions`. Ce sont deux choses complètement différentes. `PostGraphile` implémente les `lives queries` via le mot-clé `subscriptions`. Attention à bien faire la distinction entre les deux. J'ai ajouté quelques liens expliquant le concept. En résumé, partons du principe que les `subscriptions` sont utilisées pour réagir à un évènement alors que les `lives queries` sont utilisées pour réagir à un changement d'état d'une donnée.
 La solution présentée dans cette série d'article est bien mais est fortement couplée à la technologie `PostgreSQL`.
 Il est possible d'ajouter une couche d'abstraction supplémentaire afin de rendre l'unité de persistance indépendante. Un outil existe pour cela et il se nomme `Debezium`. Cette solution utilise des topics `kafka`. J'ai ajouté le liens ci-dessous.
