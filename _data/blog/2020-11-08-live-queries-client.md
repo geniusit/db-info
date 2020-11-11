@@ -72,7 +72,7 @@ yarn graphql-codegen init
 Cela lancera le CLI wizard. Ensuite, suivons les étapes listés ci-dessous :
 * L'application est faite en React.
 * L'adresse du schéma est la suivante : *http://localhost:8080/graphql* 
-* Adresse de nos opérations et fragments : *`./src/components/**/*.tsx`*. Cela recherchera tous les fichiers `TypeScript` pour la déclarations des requêtes.
+* Adresse de nos opérations et fragments : `./src/components/**/*.tsx`. Cela recherchera tous les fichiers `TypeScript` pour la déclarations des requêtes.
 * Utilisation des plugins par défaut : `TypeScript`, `TypeScript Operations`, `TypeScript React Apollo`.
 * Mettez à jour la destination des composants générés à `src/generated/graphql.tsx` (.tsx est requis par le plugin `react-apollo`).
 * Ne pas générer de fichier d'introspection.
