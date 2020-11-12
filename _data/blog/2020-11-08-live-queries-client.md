@@ -8,7 +8,7 @@ thumbnail: /assets/client.jpeg
 ---
 ## Introduction
 
-Dans l'article précédent : [Les lives queries pour une application web réactive - Partie 1](/live-queries-server/), nous avons construit la partie serveur de full stack web app. Dans cet article, nous allons réaliser la partie client. &nbsp;\
+Dans l'article précédent : [Les lives queries pour une application web réactive - Partie 1](/live-queries-server/), nous avons construit la partie serveur de notre full stack web app. Dans cet article, nous allons réaliser la partie client. &nbsp;\
 &nbsp;\
 Un bref récapitulatif de la partie 1 : Nous avons créé une base de données `PostgreSQL`. Nous avons également créé un server `node-express` lequel se connecte à notre base de données. Ensuite, nous avons ajouté `knex-migrate` dans le but de maintenir notre schéma DB et permettre d'insérer des données dans notre base de donées. Finalement, nous avons ajouté `PostGraphile` afin de générer un client `GraphQL` via `graphiql` avec toutes les opérations CRUD. &nbsp;\
 &nbsp;\
